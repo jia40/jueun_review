@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="root1"></div>
+    <script type="text/babel">
+
+        function App(){
+            return(
+                <>
+                    <h1>연락처모음집</h1>
+                    <NameCard name="홍길동" phone="010-1111-2222" />
+                    <NameCard name="김철수" phone="010-2222-2222" />
+                    <NameCard name="이영희" phone="010-3333-3333" />
+                    <NameCard name="이영희" />
+                    <NameCard />
+                </>
+            )
+        }
+        // 매개변수 측에서 바로 객체 구조 분해 할
+    //     const NameCard=({name,phone}) => {
+    //         return(
+    //             <div style= {{border: '1px solid gray', width: '200px', margin: '10px'}}>
+    //                 <div>이름:{name}</div>
+    //                 <div>연락처:{phone}</div>
+    //             </div>
+    //         )
+    //     }
+    //     ReactDOM.createRoot(document.getElementById('root1')).render(<App />);
+
+    // props 객체의 기본값 설정- default parameter(기본 매개변수) 활용
+    const NameCard= ({name="이름 없음", phone = "연락처 없음"})=>{
+        return(
+                <div style= {{border: '1px solid gray', width: '200px', margin: '10px'}}>
+                    <div>이름:{name}</div>
+                    <div>연락처:{phone}</div>
+                </div>
+            )
+        }
+        ReactDOM.createRoot(document.getElementById('root1')).render(<App />);
+     </script> 
+
+     <hr>
+
+     <div id="root2"></div>
+     <script type="text/babel">
+        function App(){
+             return(
+                <>
+                {/*children 개념
+                    1) 컴포넌트 태그 사이에 작성한 내용은 자동으로 props.children으로 전달된다.
+                    2) 이때 전달되는 값은 "텍스트", "HTML태그(JSX), "여러요소" 등으로 다양할 수 있다.*/}
+                    <GiftCard brand="신세계">3만원</GiftCard>
+                    <GiftCard brand="현대"><em>5만원</em></GiftCard>
+                </>
+            )
+        }
+       
+        const GiftCard = ({brand,children}) => {
+            return(
+                <h3>{brand}백화점 - {children}상품권</h3>
+            )
+        }
+        ReactDOM.createRoot(document.getElementById('root2')).render(<App />);
+     </script>
+
+     <hr>
+
+     <div id="root4"></div>
+     <script type="text/babel">
+        function App() {
+            const names = ["홍길동", "이순신", "강감찬"];
+            return(
+                <>
+                    <NameListComp items={names} />
+                </>
+            )
+        }
+        const NameListComp = ({items}) => {
+            console.log('items', items);
+            return((
+                <ul>
+                    {items.map((item,index)=>
+                        <li key={index}>{item}</li>)
+                    }
+                </ul>
+            ))
+        }
+         // index는 map 함수가 자동으로 넣어주는 값
+        // key={index}는 React에서 리스트에서 요소 구분하려고 쓰는 것
+        ReactDOM.createRoot(document.getElementById('root4')).render(<App />);
+     </script>
+    <hr>
+
+    <div id="root5"></div>
+    <script type="text/babel">
+        function App() {
+            const cars = [
+                {
+                    carNo: '123가1234',
+                    model: 'volvo'
+                },
+                {
+                    carNo: '456가0101',
+                    model: 'kia'
+                },
+                {
+                    carNo: '222나9933',
+                    model: 'benz'
+                },
+            ];
+            return(
+                <>
+                    <CarListComp cars={cars}/>
+                </>
+            );
+        }
+
+        const CarListComp = ( {cars} ) => {
+            return(
+                <div>
+                    {cars.map((car)=><CarItemComp key={car.carNo} car={car}/>)}
+                </div>
+            )
+        }
+        
+        const CarItemComp = ({car}) => {
+            return(
+                <div>
+                    <h4>차번호:{car.carNo}</h4>
+                    <h4>브랜드:{car.model}</h4>
+                </div>
+            )
+        }
+         ReactDOM.createRoot(document.getElementById('root5')).render(<App />);
+        </script>
+</body>
+</html>
